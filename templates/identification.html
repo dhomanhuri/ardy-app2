@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Skripsi Ardyansyah</title>
+</head>
+
+<!-- ======= Header ======= -->
+<header id="header" class="d-flex align-items-center">
+  <div class="container d-flex align-items-center justify-content-between">
+
+    <h1 class="text-white" style="font-size: 24px"> SISTEM TEMU KEMBALI INFORMASI PESAWAT UDARA MILITER</a></h1>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto" href="/">Home</a></li>
+        <li><a class="nav-link scrollto active" href="/identification">Search</a></li>
+        <li><a class="nav-link scrollto" href="/dataset">Dataset</a></li>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
+
+  </div>
+</header><!-- End Header -->
+
+<body>
+  <div id="hero2" class="">
+    <div class="container">
+      <div class="row">
+        <div class="col-md mt-2">
+          <h4 class="text-white text-center text left-content-center d-flex align-items-center">
+            Silahkan Training Data Terlebih Dahulu
+          </h4>
+        </div>
+      </div>
+      <div class="row">
+        {% if setup_form_error %}
+        <h5 class="text-center alert alert-danger">Cek Kembali Form Setup Backpropagation</h5>
+        {% else %}
+        {% if show_dialog %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert"> 
+          <h5 class="text-center mt-3">Pelatihan Selesai!</h5>
+          <h5 class="text-center">Akurasi Data = {{ accuracy_train }} %</h5>
+          <h5 class="text-center">Hasil Error Data = {{ loss_train }}</h5>
+        </div>
+        {% endif %}
+        {% endif %}
+        {% if Form_error %}
+        <h5 class="text-center alert alert-danger">Cek Kembali Semua Form Anda!</h5>
+        {% endif %}
+        {% if error_train %}
+        <h5 class="text-center alert alert-danger">Data Perlu Dilatih Terlebih Dahulu!</h5>
+        {% endif %}
+      </div>
+
+      <!--        modal bootstrap-->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <form action="/training_data" method="post">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Setup Neural Network Backpropagation</h5>
+              </div>
+              <div class="modal-body">
+                <div class="alert alert-success text-center hidden" id="success-alert">
+                  <i class="fa fa-refresh fa-spin mx-2"></i>Data Sedang Dilatih
+                </div>
+                <div class="mb-3">
+                  <label class="col-form-label">Neuron Hidden Layer</label>
+                  <input type="text" class="form-control" name="neuronHiddenLayer"
+                    placeholder="Contoh = 300">
+                </div>
+                <div class="mb-3">
+                  <label class="col-form-label">Learning Rate</label>
+                  <input type="text" class="form-control" name="learningRate"
+                    placeholder="Contoh = 0.6">
+                </div>
+                <div class="mb-3">
+                  <label class="col-form-label">Iteration</label>
+                  <input type="text" class="form-control" name="iteration" placeholder="Contoh = 1000 ">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="training_data">Training Data</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--        end modal bootstrap-->
+
+      <div class="row">
+        <div class="col-md-12"></div>
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary mt-4 max-width mb-4" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">Training Data Pesawat</button>
+        </div>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md mt-4">
+              <h1 class="text-white text-center text justify-content-center d-flex align-items-center">
+                Silahkan Pilih Karakteristik Sesuai keinginan
+              </h1>
+            </div>
+          </div>
+
+      <form action="/getting_value" method="POST">
+        <div class="row mt-4">
+          <div class="col-md">
+            <h4 class="text-white">Wings Features</h4>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-4">
+            <label class="form-label text-white">Jenis Sayap</label>
+            <input type="hidden" name="jenissayap_data" id="jenissayap_data" value="" />
+            <select id="slick1" class="form-select" name="jenissayap">
+              <option data-imagesrc="{{ url_for('static', filename='image/white.jpg') }}"
+                data-description="Wings Feature">Select a Features</option>
+              {% for jenis_sayap in jenis_sayap %}
+              <option value={{jenis_sayap[2]}}
+                data-imagesrc="{{ url_for('static', filename='image/fitur/' + jenis_sayap[3]) }}"
+                data-description="Wings Feature">{{jenis_sayap[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label text-white ">Jumlah Sayap</label>
+            <input type="hidden" name="jumlahsayap_data" id="jumlahsayap_data" value="" />
+            <select id="slick3" class="form-select" name="jumlahsayap">
+              <option data-imagesrc="{{ url_for('static', filename='image/white.jpg') }}"
+                data-description="Wings Feature">Select a Features</option>
+              {% for jumlah_sayap in jumlah_sayap %}
+              <option value={{jumlah_sayap[2]}}
+                data-imagesrc="{{ url_for('static', filename='image/fitur/' + jumlah_sayap[3]) }}"
+                data-description="Wings Feature">{{jumlah_sayap[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md">
+            <h4 class="text-white">Fuslage Features</h4>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-4">
+            <label class="form-label text-white">Bentuk Badan</label>
+            <input type="hidden" name="badanpesawat_data" id="badanpesawat_data" value="" />
+            <select id="slick8" class="form-select" name="badanpesawat">
+              <option data-imagesrc="{{ url_for('static', filename='image/white.jpg') }}"
+                data-description="Fuslage Feature">Select a Features</option>
+              {% for badan_pesawat in badan_pesawat %}
+              <option value={{badan_pesawat[2]}}
+                data-imagesrc="{{ url_for('static', filename='image/fitur/' + badan_pesawat[3]) }}"
+                data-description="Fuslage Feature">{{badan_pesawat[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md">
+            <h4 class="text-white">Engine Features</h4>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-4">
+            <label class="form-label text-white">Jenis Mesin</label>
+            <input type="hidden" name="jenismesin_data" id="jenismesin_data" value="" />
+            <select id="slick5" class="form-select" name="jenismesin">
+              <option data-imagesrc="{{ url_for('static', filename='image/white.jpg') }}"
+                data-description="Engine Feature">Select a Features</option>
+              {% for jenis_mesin in jenis_mesin %}
+              <option value={{jenis_mesin[2]}}
+                data-imagesrc="{{ url_for('static', filename='image/fitur/' + jenis_mesin[3]) }}"
+                data-description="Engine Feature">{{jenis_mesin[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label text-white">Jumlah Mesin</label>
+            <input type="hidden" name="jumlahmesin_data" id="jumlahmesin_data" value="" />
+            <select id="slick6" class="form-select" name="jumlahmesin">
+              <option data-imagesrc="{{ url_for('static', filename='image/white.jpg') }}"
+                data-description="Engine Feature">Select a Features</option>
+              {% for jumlah_mesin in jumlah_mesin %}
+              <option value={{jumlah_mesin[2]}}
+                data-imagesrc="{{ url_for('static', filename='image/fitur/' + jumlah_mesin[3]) }}"
+                data-description="Engine Feature">{{jumlah_mesin[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md">
+            <h4 class="text-white">Tail Features</h4>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-4">
+            <label class="form-label text-white">Bentuk Ekor</label>
+            <input type="hidden" name="jenisekor_data" id="jenisekor_data" value="" />
+            <select id="slick9" class="form-select" name="jenisekor">
+              <option data-imagesrc="{{ url_for('static', filename='image/white.jpg') }}"
+                data-description="Tail Feature">Select a Features</option>
+              {% for bentuk_ekor in bentuk_ekor %}
+              <option value={{bentuk_ekor[2]}}
+                data-imagesrc="{{ url_for('static', filename='image/fitur/' + bentuk_ekor[3]) }}"
+                data-description="Tail Feature">{{bentuk_ekor[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md">
+            <h4 class="text-white">Additional Features</h4>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label text-white">Persenjataan</label>
+          <input type="hidden" name="persenjataan_data" id="persenjataan_data" value="" />
+          <select id="slick12" class="form-select" name="persenjataan">
+            <option data-imagesrc="{{ url_for('static', filename='image/white.jpg') }}"
+                data-description="Additional Feature">Select a Features</option>
+            {% for persenjataan in persenjataan %}
+            <option value={{persenjataan[2]}} data-imagesrc="{{ url_for('static', filename='image/fitur/' + persenjataan[3]) }}"
+                data-description="Additional Feature">{{persenjataan[1]}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-4">
+            <label class="form-label text-white">Warna Pesawat</label>
+            <input type="hidden" name="warnapesawat_data" id="warnapesawat_data" value="" />
+            <select id="slick13" class="form-select" name="warnapesawat">
+              <option data-imagesrc="{{ url_for('static', filename='image/white.jpg') }}"
+                data-description="Additional Feature">Select a Features</option>
+              {% for warna in warna %}
+              <option value={{warna[2]}} data-imagesrc="{{ url_for('static', filename='image/fitur/' + warna[3]) }}"
+                data-description="Additional Feature">{{warna[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-4"></div>
+          <div class="col-md-4"></div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-6 "></div>
+          <div class="col-md-6 ">
+            <button type="submit" class="btn btn-danger mt-5 max-width">Cari Pesawat Udara</button>
+          </div>
+          <div class="col-md-3 "></div>
+        </div>
+      </form>
+      
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md">
+
+          <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+              {% if Form_error == False %}
+              {% if show_result %}
+              <h3 class="text-center mt-6 text-white">Hasil Identifikasi</h3>
+              <h5 class="text-center mt-3 text-white">Akurasi Prediksi Pesawat Udara {{data}} %,</h5>
+              {% if get_predict %}
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped table-hover table-paginate">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Nama Pesawat</th>
+                  <th scope="col">Negara Pembuat</th>
+
+                </tr>
+              </thead>
+              <tbody class="table-light">
+                {% for get_predict in get_predict %}
+
+                <tr>
+                  <td id="no">{{i}}</td>
+                  <td style="color:blue ;"><a
+                      onclick="myFunction('{{nearest_predict[7]}}','{{nearest_predict[8]}}','{{nearest_predict[9]}}')">{{get_predict[7]}}</a>
+                  </td>
+                  <td><a onclick="myFunction()">{{get_predict[9]}}</a></td>
+
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+          </div>
+          {% for get_predict in get_predict %}
+          <div id="myDIV" style="display: none;">
+            <h5 id="predik" class="text-center">Prediksi Tipe Pesawat {{get_predict[7]}} buatan Negara
+              {{get_predict[9]}}</h5>
+            <img id="img" class="mx-auto d-block mb-4" width="40%"
+              src="{{ url_for('static', filename='image/pesawat/' + get_predict[8]) }}">
+          </div>
+          {% endfor %}
+          {% else %}
+          <div class="table-responsive">
+            <table class="table table-striped table-hover table-paginate">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Nama Pesawat</th>
+                  <th scope="col">Negara Pembuat</th>
+
+                </tr>
+              </thead>
+              <tbody class="table-light">
+
+                {% for nearest_predict in nearest_predict %}
+                <tr>
+                  <td id="no">{{loop.index}}
+                  </td>
+                  <td style="color:blue;"><a
+                      onclick="myFunction('{{nearest_predict[7]}}','{{nearest_predict[8]}}','{{nearest_predict[9]}}')">{{nearest_predict[7]}}</a>
+                  </td>
+                  <td>{{nearest_predict[9]}}</td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+
+          </div>
+          <div id="myDIV" style="display: none;">
+            <h5 class="text-center" id="predik">Prediksi Tipe Pesawat {{nearest_predict[7]}} buatan Negara
+              {{nearest_predict[9]}}
+            </h5>
+            <img id="img" class="mx-auto d-block mb-4" width="40%" src="static/image/pesawat/A129Mangusta.jpg">
+
+          </div>
+          {% endif %}
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
+  </script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js">
+  </script>
+  <script>
+    function numbering(i) {
+      var a = document.getElementById("no");
+      no.innerHTML = i + 1
+    }
+
+    function myFunction(name, img, country) {
+      var x = document.getElementById("myDIV");
+      var y = document.getElementById("predik");
+      var z = document.getElementById("img");
+
+      x.style.display = "block";
+      y.innerHTML = "Prediksi Tipe Pesawat" + name + "buatan Negara" + country;
+      z.src = "static/image/pesawat/" + img;
+
+    }
+
+
+    $('#slick1').ddslick({
+      width: "100%",
+      imagePosition: "right",
+      onSelected: function (data) {
+        if (data.selectedIndex > 0) {
+          $('#jenissayap_data').val(data.selectedData.value);
+        }
+      }
+    });
+    // $('#slick2').ddslick({
+    //   width: "100%",
+    //   imagePosition: "right",
+    //   onSelected: function (data) {
+    //     if (data.selectedIndex > 0) {
+    //       $('#penempatansayap_data').val(data.selectedData.value);
+    //     }
+    //   }
+    // });
+    $('#slick3').ddslick({
+      width: "100%",
+      imagePosition: "right",
+      onSelected: function (data) {
+        if (data.selectedIndex > 0) {
+          $('#jumlahsayap_data').val(data.selectedData.value);
+        }
+      }
+    });
+    // $('#slick4').ddslick({
+    //   width: "100%",
+    //   imagePosition: "right",
+    //   onSelected: function (data) {
+    //     if (data.selectedIndex > 0) {
+    //       $('#arahsayap_data').val(data.selectedData.value);
+    //     }
+    //   }
+    // });
+    $('#slick5').ddslick({
+      width: "100%",
+      imagePosition: "right",
+      onSelected: function (data) {
+        if (data.selectedIndex > 0) {
+          $('#jenismesin_data').val(data.selectedData.value);
+        }
+      }
+    });
+    $('#slick6').ddslick({
+      width: "100%",
+      imagePosition: "right",
+      onSelected: function (data) {
+        if (data.selectedIndex > 0) {
+          $('#jumlahmesin_data').val(data.selectedData.value);
+        }
+      }
+    });
+    // $('#slick7').ddslick({
+    //   width: "100%",
+    //   imagePosition: "right",
+    //   onSelected: function (data) {
+    //     if (data.selectedIndex > 0) {
+    //       $('#posisimenis_data').val(data.selectedData.value);
+    //     }
+    //   }
+    // });
+    $('#slick8').ddslick({
+      width: "100%",
+      imagePosition: "right",
+      onSelected: function (data) {
+        if (data.selectedIndex > 0) {
+          $('#badanpesawat_data').val(data.selectedData.value);
+        }
+      }
+    });
+    $('#slick9').ddslick({
+      width: "100%",
+      imagePosition: "right",
+      onSelected: function (data) {
+        if (data.selectedIndex > 0) {
+          $('#jenisekor_data').val(data.selectedData.value);
+        }
+      }
+    });
+    // $('#slick10').ddslick({
+    //   width: "100%",
+    //   imagePosition: "right",
+    //   onSelected: function (data) {
+    //     if (data.selectedIndex > 0) {
+    //       $('#jenislandinggear_data').val(data.selectedData.value);
+    //     }
+    //   }
+    // });
+    // $('#slick11').ddslick({
+    //   width: "100%",
+    //   imagePosition: "right",
+    //   onSelected: function (data) {
+    //     if (data.selectedIndex > 0) {
+    //       $('#canard_data').val(data.selectedData.value);
+    //     }
+    //   }
+    // });
+    $('#slick12').ddslick({
+      width: "100%",
+      imagePosition: "right",
+      onSelected: function (data) {
+        if (data.selectedIndex > 0) {
+          $('#persenjataan_data').val(data.selectedData.value);
+        }
+      }
+    });
+    $('#slick13').ddslick({
+      width: "100%",
+      imagePosition: "right",
+      onSelected: function (data) {
+        if (data.selectedIndex > 0) {
+          $('#warnapesawat_data').val(data.selectedData.value);
+        }
+      }
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      $("#training_data").click(function () {
+        $('#success-alert').removeClass('hidden');
+      });
+    });
+  </script>
+</body>
+
+</html>
