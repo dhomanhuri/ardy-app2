@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+  <!-- Jquery -->
+  <script type="text/javascript" language="javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <!-- Jquery DataTables -->
+  <script type="text/javascript" language="javascript"
+    src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <!-- Bootstrap dataTables Javascript -->
+  <script type="text/javascript" language="javascript"
+    src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+  <title>Skripsi Ardyansah</title>
+</head>
+
+<body>
+  <div class="hero2">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md mt-4 ml-5">
+          <a href="/" class="btn btn-light px-5">Kembali</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md mt-4">
+          <h1 class="text-center text justify-content-center d-flex align-items-center">
+            Dataset Yang Ingin Dicari
+          </h1>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover table-paginate">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Jenis Sayap</th>
+                  <th scope="col">Jumlah Sayap</th>
+                  <th scope="col">Jumlah Mesin</th>
+                  <th scope="col">Jenis Mesin</th>
+                  <th scope="col">Bentuk Badan</th>
+                  <th scope="col">Jenis Ekor</th>
+                  <th scope="col">Persenjataan</th>
+                  <th scope="col">Warna</th>
+                  <th scope="col">Jenis Pesawat</th>
+                </tr>
+              </thead>
+              <tbody class="table-light">
+                {% for get_all_dataset in get_all_dataset %}
+                <tr>
+                  <td>{{get_all_dataset[0]}}</td>
+                  <td>{{get_all_dataset[1]}}</td>
+                  <td>{{get_all_dataset[2]}}</td>
+                  <td>{{get_all_dataset[3]}}</td>
+                  <td>{{get_all_dataset[4]}}</td>
+                  <td>{{get_all_dataset[5]}}</td>
+                  <td>{{get_all_dataset[6]}}</td>
+                  <td>{{get_all_dataset[7]}}</td>
+                  <td>{{get_all_dataset[8]}}</td>
+                  <td>{{get_all_dataset[9]}}</td>
+
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+      $('.table-paginate').dataTable();
+    });
+  </script>
+</body>
+
+</html>
