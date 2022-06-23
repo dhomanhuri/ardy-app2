@@ -7,10 +7,10 @@ from textwrap import wrap
 import fusi_code as fc
 #cekkk
 app = Flask(__name__)
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'skripsi_aircraft'
+app.config['MYSQL_HOST'] = 'promaydo.net'
+app.config['MYSQL_USER'] = 'promaydo_ardy'
+app.config['MYSQL_PASSWORD'] = 'polinema@123'
+app.config['MYSQL_DB'] = 'promaydo_ardy'
 
 mysql = MySQL(app)
 
