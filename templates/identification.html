@@ -22,6 +22,7 @@
         <li><a class="nav-link scrollto" href="/">Home</a></li>
         <li><a class="nav-link scrollto active" href="/identification">Search</a></li>
         <li><a class="nav-link scrollto" href="/dataset">Dataset</a></li>
+        <li><a class="nav-link scrollto" href="/pelatihan">Training Data</a></li>
       <i class="bi bi-list mobile-nav-toggle"></i>
     </nav><!-- .navbar -->
 
@@ -29,88 +30,16 @@
 </header><!-- End Header -->
 
 <body>
+ 
   <div id="hero2" class="">
     <div class="container">
       <div class="row">
         <div class="col-md mt-2">
           <h4 class="text-white text-center text left-content-center d-flex align-items-center">
-            Silahkan Training Data Terlebih Dahulu
+            Silahkan Pilih Karakteristik Sesuai keinginan
           </h4>
         </div>
       </div>
-      <div class="row">
-        {% if setup_form_error %}
-        <h5 class="text-center alert alert-danger">Cek Kembali Form Setup Backpropagation</h5>
-        {% else %}
-        {% if show_dialog %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert"> 
-          <h5 class="text-center mt-3">Pelatihan Selesai!</h5>
-          <h5 class="text-center">Akurasi Data = {{ accuracy_train }} %</h5>
-          <h5 class="text-center">Hasil Error Data = {{ loss_train }}</h5>
-        </div>
-        {% endif %}
-        {% endif %}
-        {% if Form_error %}
-        <h5 class="text-center alert alert-danger">Cek Kembali Semua Form Anda!</h5>
-        {% endif %}
-        {% if error_train %}
-        <h5 class="text-center alert alert-danger">Data Perlu Dilatih Terlebih Dahulu!</h5>
-        {% endif %}
-      </div>
-
-      <!--        modal bootstrap-->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <form action="/training_data" method="post">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Setup Neural Network Backpropagation</h5>
-              </div>
-              <div class="modal-body">
-                <div class="alert alert-success text-center hidden" id="success-alert">
-                  <i class="fa fa-refresh fa-spin mx-2"></i>Data Sedang Dilatih
-                </div>
-                <div class="mb-3">
-                  <label class="col-form-label">Neuron Hidden Layer</label>
-                  <input type="text" class="form-control" name="neuronHiddenLayer"
-                    placeholder="Contoh = 300">
-                </div>
-                <div class="mb-3">
-                  <label class="col-form-label">Learning Rate</label>
-                  <input type="text" class="form-control" name="learningRate"
-                    placeholder="Contoh = 0.6">
-                </div>
-                <div class="mb-3">
-                  <label class="col-form-label">Iteration</label>
-                  <input type="text" class="form-control" name="iteration" placeholder="Contoh = 1000 ">
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="training_data">Training Data</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <!--        end modal bootstrap-->
-
-      <div class="row">
-        <div class="col-md-12"></div>
-        <div class="col-md-12">
-          <button type="submit" class="btn btn-primary mt-4 max-width mb-4" data-bs-toggle="modal"
-            data-bs-target="#exampleModal">Training Data Pesawat</button>
-        </div>
-
-        <div class="container">
-          <div class="row">
-            <div class="col-md mt-4">
-              <h1 class="text-white text-center text justify-content-center d-flex align-items-center">
-                Silahkan Pilih Karakteristik Sesuai keinginan
-              </h1>
-            </div>
-          </div>
-
       <form action="/getting_value" method="POST">
         <div class="row mt-4">
           <div class="col-md">
@@ -338,7 +267,7 @@
 
           </div>
           <div id="myDIV" style="display: none;">
-            <h5 class="text-center" id="predik">Prediksi Tipe Pesawat {{nearest_predict[7]}} buatan Negara
+            <h5 class="text-center text-white" id="predik">Prediksi Tipe Pesawat {{nearest_predict[7]}} buatan Negara
               {{nearest_predict[9]}}
             </h5>
             <img id="img" class="mx-auto d-block mb-4" width="40%" src="static/image/pesawat/A129Mangusta.jpg">
@@ -501,5 +430,14 @@
     });
   </script>
 </body>
-
+<!-- ======= Footer ======= -->
+<footer id="footer">
+  <div class="footer">
+    <div class="container">
+      <div class="row">
+  <div class="container">
+    <div class="copyright">
+      &copy; Copyright <strong><span>Ardyansyah Vira Bahrudin</span></strong>. All Rights Reserved
+    </div>
+  </footer><!-- End Footer -->
 </html>

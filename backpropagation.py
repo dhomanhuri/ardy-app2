@@ -1,5 +1,6 @@
 import numpy as np
 import time
+import joblib
 
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
@@ -82,6 +83,13 @@ class Neural_Network:
                 self.update_params()
 
                 outputs = self.predict(inputs, self.weight_hidden, self.weight_output, self.bias_hidden, self.bias_output)
+
+                weight_params = [self.weight_hidden, self.weight_output, self.bias_hidden, self.bias_output]
+
+                # save bobot
+                filename = 'weight_param.pkl'
+                joblib.dump(weight_params, filename)
+    
                 label = np.argmax(outputs)
                 all_label.append(label)
                 if (label == correct_label):
@@ -98,6 +106,7 @@ class Neural_Network:
         accu_array = np.asarray(accu_train)
         self.accu_train = accu_array.sum() / accu_array.size * 100
         self.final_loss = loss
+
         print("Epochs = ", i)
         print("Loss =", loss)
         print("Accu Train: ", self.accu_train, "%")

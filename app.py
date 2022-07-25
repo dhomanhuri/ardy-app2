@@ -5,6 +5,7 @@ from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
 from textwrap import wrap
 import fusi_code as fc
+import joblib
 #cekkk
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'promaydo.net'
@@ -105,6 +106,10 @@ def identifikasi():
     cur7.close()
     return render_template('identification.html', jenis_sayap=jenis_sayap, jumlah_sayap=jumlah_sayap, badan_pesawat=badan_pesawat, jenis_mesin=jenis_mesin, jumlah_mesin=jumlah_mesin, bentuk_ekor=bentuk_ekor, persenjataan=persenjataan, warna=warna)
 
+@app.route('/pelatihan')
+def training_data():
+    return render_template('pelatihan.html')
+
 @app.route('/training_data', methods=['GET', 'POST'])
 def train_data():
     global hidden_layer, learning_rate, NN, weight_hidden, weight_output, bias_hidden, bias_output, is_trained
@@ -116,7 +121,7 @@ def train_data():
         iteration = request.form['iteration']
         if hidden_layer == '' or learning_rate == '' or iteration == '':
             setup_form_error = True
-            return render_template('identification.html', setup_form_error=setup_form_error, show_dialog=True, jenis_sayap=jenis_sayap, jumlah_sayap=jumlah_sayap, badan_pesawat=badan_pesawat,jenis_mesin=jenis_mesin, jumlah_mesin=jumlah_mesin, bentuk_ekor=bentuk_ekor, persenjataan=persenjataan, warna=warna)
+            return render_template('pelatihan.html', setup_form_error=setup_form_error, show_dialog=True, jenis_sayap=jenis_sayap, jumlah_sayap=jumlah_sayap, badan_pesawat=badan_pesawat,jenis_mesin=jenis_mesin, jumlah_mesin=jumlah_mesin, bentuk_ekor=bentuk_ekor, persenjataan=persenjataan, warna=warna)
         cur14 = mysql.connection.cursor()
         cur14.execute("SELECT * FROM separate_fusi_dataset")
         for i in cur14:
@@ -142,7 +147,7 @@ def train_data():
         cur14.close()
         NN = bp.Neural_Network(5, int(hidden_layer), 4, float(learning_rate))
         NN.train_data(data, int(iteration))
-        is_trained = True
+        # is_trained = True
         accuracy_train = round(NN.accu_train, 2)
         loss_train = NN.final_loss
         if weight_hidden != '' and accuracy_train > 94:
@@ -155,8 +160,8 @@ def train_data():
             weight_output = NN.weight_output
             bias_hidden = NN.bias_hidden
             bias_output = NN.bias_output
-        
-        return render_template('identification.html', setup_form_error=setup_form_error, show_dialog=True, accuracy_train=accuracy_train, loss_train=loss_train, jenis_sayap=jenis_sayap, jumlah_sayap=jumlah_sayap, badan_pesawat=badan_pesawat,jenis_mesin=jenis_mesin, jumlah_mesin=jumlah_mesin, bentuk_ekor=bentuk_ekor, persenjataan=persenjataan, warna=warna)
+
+        return render_template('pelatihan.html', setup_form_error=setup_form_error, show_dialog=True, accuracy_train=accuracy_train, loss_train=loss_train, jenis_sayap=jenis_sayap, jumlah_sayap=jumlah_sayap, badan_pesawat=badan_pesawat,jenis_mesin=jenis_mesin, jumlah_mesin=jumlah_mesin, bentuk_ekor=bentuk_ekor, persenjataan=persenjataan, warna=warna)
     
 
 # mengambil data dari form input dan menggabungkan menjadi 1 list dan data input difusikan
@@ -185,18 +190,22 @@ def get_val():
         if jenis_sayap_data == '' or jumlah_sayap_data == '' or badan_pesawat_data == '' or jenis_mesin_data == '' or jumlah_mesin_data == ''  or jenis_ekor_data == '' or persenjataan_data == '' or warna_pesawat_data== '' :
             Form_error = True
             return render_template('identification.html', show_result=True,Form_error=Form_error, jenis_sayap=jenis_sayap,jumlah_sayap=jumlah_sayap, badan_pesawat=badan_pesawat,jenis_mesin=jenis_mesin,jumlah_mesin=jumlah_mesin, bentuk_ekor=bentuk_ekor, persenjataan=persenjataan, warna=warna)
-        if is_trained == False:
-            error_train = True
-            return render_template('identification.html', error_train=error_train, jenis_sayap=jenis_sayap,jumlah_sayap=jumlah_sayap, badan_pesawat=badan_pesawat,jenis_mesin=jenis_mesin,jumlah_mesin=jumlah_mesin, bentuk_ekor=bentuk_ekor, persenjataan=persenjataan, warna=warna)
+        # if is_trained == False:
+        #     error_train = True
+        #     return render_template('identification.html', error_train=error_train, jenis_sayap=jenis_sayap,jumlah_sayap=jumlah_sayap, badan_pesawat=badan_pesawat,jenis_mesin=jenis_mesin,jumlah_mesin=jumlah_mesin, bentuk_ekor=bentuk_ekor, persenjataan=persenjataan, warna=warna)
         wings.extend([jenis_sayap_data, jumlah_sayap_data])
         fuselage.extend([badan_pesawat_data])
         engine.extend([jenis_mesin_data, jumlah_mesin_data])
         tail.extend([jenis_ekor_data])
-        additional.extend([warna_pesawat_data])
+        additional.extend([persenjataan_data, warna_pesawat_data])
         
         arrays.extend([fc.convert_decimal(fc.add_dot_separator(fusi_informasi(wings)[0])),fc.convert_decimal(fc.add_dot_separator(fusi_informasi(engine)[0])), fc.convert_decimal(fc.add_dot_separator(fuselage[0])),fc.convert_decimal(fc.add_dot_separator(tail[0])), fc.convert_decimal(fc.add_dot_separator(fusi_informasi(additional)[0]))])
         data_predict = np.asfarray(arrays)
-        predict = NN.predict(data_predict, weight_hidden, weight_output, bias_hidden, bias_output)
+        load_weight = joblib.load("weight_param.pkl")
+        print(load_weight)
+        predict = NN.predict(data_predict, load_weight[0], load_weight[1], load_weight[2], load_weight[3])
+
+        # predict = NN.predict(data_predict, weight_hidden, weight_output, bias_hidden, bias_output)
         print(predict)
         predict_index = np.argmax(predict)
         print (np.argmax(predict), np.argmin(predict))
@@ -229,5 +238,7 @@ def get_val():
             nearest_predict = cur17.fetchall()
             
         print(index_label)
+
         
+
         return render_template('identification.html', nearest_predict=nearest_predict, data=accuracy, index_label=index_label, show_result=True, Form_error=Form_error, get_predict=get_predict ,jenis_sayap=jenis_sayap, jumlah_sayap=jumlah_sayap, badan_pesawat=badan_pesawat,jenis_mesin=jenis_mesin, jumlah_mesin=jumlah_mesin, bentuk_ekor=bentuk_ekor, persenjataan=persenjataan, warna=warna)
