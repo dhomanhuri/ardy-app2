@@ -11,16 +11,25 @@
   <title>Sistem Temu Kembali Informasi Pesawat udara Militer</title>
 </head>
 
+<!-- ======= Top Bar ======= -->
+<section id="topbar" class="d-flex align-items-center">
+  <div class="container d-flex justify-content-center justify-content-md-between">
+    <div class="contact-info d-flex align-items-center">
+      <i class="bi bi-phone-fill phone-icon"></i> Ardyansyah Vira Bahrudin
+    </div>
+</section>
+
 <!-- ======= Header ======= -->
 <header id="header" class="d-flex align-items-center">
   <div class="container d-flex align-items-center justify-content-between">
 
-    <h1 class="text-white" style="font-size: 24px"> SISTEM TEMU KEMBALI INFORMASI PESAWAT UDARA MILITER</a></h1>
+    <h1 class="text-white" style="font-size: 20px"> SISTEM TEMU KEMBALI INFORMASI PESAWAT UDARA MILITER</a></h1>
 
     <nav id="navbar" class="navbar">
       <ul>
         <li><a class="nav-link scrollto" href="/">Home</a></li>
-        <li><a class="nav-link scrollto" href="/identification">Search</a></li>
+        <li><a class="nav-link scrollto" href="/panduan">Panduan</a></li>
+        <li><a class="nav-link scrollto" href="/identification">Pencarian</a></li>
         <li><a class="nav-link scrollto" href="/dataset">Dataset</a></li>
         <li><a class="nav-link scrollto active" href="/pelatihan">Training Data</a></li>
       <i class="bi bi-list mobile-nav-toggle"></i>
@@ -34,12 +43,14 @@
     <div class="container">
       <div class="row">
         <div class="col-md mt-2">
-          <h4 class="text-white text-center text left-content-center ">
-            Jika Ingin Merubah Akurasi Silahkan Melakukan Training Data
-          </h4>
         </div>
       </div>
       <div class="row">
+        {% if form_succes %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert"> 
+          <h5 class="text-center mt-3">Proses Sedang Berjalan!</h5>
+        </div>
+        {% endif %}
         {% if setup_form_error %}
         <h5 class="text-center alert alert-danger">Cek Kembali Form Setup Backpropagation</h5>
         {% else %}
@@ -51,63 +62,46 @@
         </div>
         {% endif %}
         {% endif %}
-        {% if Form_error %}
+        <!-- {% if Form_error %}
         <h5 class="text-center alert alert-danger">Cek Kembali Semua Form Anda!</h5>
         {% endif %}
         {% if error_train %}
         <h5 class="text-center alert alert-danger">Data Perlu Dilatih Terlebih Dahulu!</h5>
-        {% endif %}
+        {% endif %} -->
       </div>
 
-      <!--        modal bootstrap-->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <form action="/training_data" method="post">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Setup Neural Network Backpropagation</h5>
-              </div>
-              <div class="modal-body">
-                <div class="alert alert-success text-center hidden" id="success-alert">
-                  <i class="fa fa-refresh fa-spin mx-2"></i>Data Sedang Dilatih
-                </div>
-                <div class="mb-3">
-                  <label class="col-form-label">Neuron Hidden Layer</label>
-                  <input type="text" class="form-control" name="neuronHiddenLayer"
-                    placeholder="Contoh = 400">
-                </div>
-                <div class="mb-3">
-                  <label class="col-form-label">Learning Rate</label>
-                  <input type="text" class="form-control" name="learningRate"
-                    placeholder="Contoh = 0.4">
-                </div>
-                <div class="mb-3">
-                  <label class="col-form-label">Iteration</label>
-                  <input type="text" class="form-control" name="iteration" placeholder="Contoh = 2000 ">
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="training_data">Training Data</button>
-              </div>
-            </form>
-          </div>
+ <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+    <form action="/training_data" method="post">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Setup Neural Network Backpropagation</h5>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success text-center hidden" id="success-alert">
+          <i class="fa fa-refresh fa-spin mx-2"></i>Data Sedang Dilatih
+        </div>
+        <div class="mb-3">
+          <label class="col-form-label">Neuron Hidden Layer</label>
+          <input type="text" class="form-control" name="neuronHiddenLayer"
+            placeholder="Contoh = 400">
+        </div>
+        <div class="mb-3">
+          <label class="col-form-label">Learning Rate</label>
+          <input type="text" class="form-control" name="learningRate"
+            placeholder="Contoh = 0.4">
+        </div>
+        <div class="mb-3">
+          <label class="col-form-label">Iteration</label>
+          <input type="text" class="form-control" name="iteration" placeholder="Contoh = 2000 ">
         </div>
       </div>
-      <!--        end modal bootstrap-->
-
-      <div class="mx-auto">
-        <button type="submit" class="btn btn-primary mt-4 max-width mb-4" data-bs-toggle="modal"
-            data-bs-target="#exampleModal">Training Data Pesawat</button>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="training_data">Training Data</button>
       </div>
-      
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
-  </script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js">
-  </script>
- 
+    </form>
+  </div>
+</div>
 </body>
 
 <!-- ======= Footer ======= -->

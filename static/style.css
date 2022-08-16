@@ -496,7 +496,7 @@ section {
   position: relative;
   z-index: 2;
 }
-@media (max-width: 575px) {
+@media (max-width: 2000px) {
   .section-title h2 {
     font-size: 28px;
     margin-bottom: 15px;
@@ -1269,4 +1269,93 @@ section {
   #footer .footer-top .footer-info {
     margin: -20px 0 30px 0;
   }
+}
+
+/*--------------------------------------------------------------
+# About
+--------------------------------------------------------------*/
+.about .content h3 {
+  font-weight: 600;
+  font-size: 26px;
+}
+.about .content ul {
+  list-style: none;
+  padding: 0;
+}
+.about .content ul li {
+  padding-bottom: 10px;
+}
+.about .content ul i {
+  font-size: 20px;
+  padding-right: 4px;
+  color: #cc1616;
+}
+.about .content p:last-child {
+  margin-bottom: 0;
+}
+
+/* 2 */
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'PT Serif', serif;
+}
+
+.hero2 {
+    width: 100%;
+    height: calc(120vh - 200px);
+    background: url("../static/img/pangkalan.jpg") top center;
+    background-size: cover;
+    position: relative;
+  }
+
+.background-view{
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#77A6F7), to(#D3E3FC));
+    height: 100vh;
+    z-index: -100;
+}
+
+.back-view{
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#77A6F7), to(#D3E3FC));
+}
+
+.hidden {
+    display: none;
+}
+
+.wave{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/* styled css */
+
+.zindex-99{
+    z-index: 99 !important;
+}
+
+.mt-6{
+    margin-top:6rem!important
+}
+
+.mt-9{
+    margin-top:9rem!important
+}
+
+.mt-10{
+    margin-top:10rem!important
+}
+
+.max-width{
+    width:100%;
+}
+
+.center-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

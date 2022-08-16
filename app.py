@@ -52,6 +52,10 @@ def index():
 def tutorial():
     return render_template('instruction.html')
 
+@app.route('/panduan')
+def panduan():
+    return render_template('panduan.html')
+
 @app.route('/dataset')
 def dataset_aircraft():
     cur_dataset = mysql.connection.cursor()
@@ -115,6 +119,7 @@ def train_data():
     global hidden_layer, learning_rate, NN, weight_hidden, weight_output, bias_hidden, bias_output, is_trained
     if request.method == 'POST':
         data = []
+        
         setup_form_error = False
         hidden_layer = request.form['neuronHiddenLayer']
         learning_rate = request.form['learningRate']
@@ -163,7 +168,6 @@ def train_data():
 
         return render_template('pelatihan.html', setup_form_error=setup_form_error, show_dialog=True, accuracy_train=accuracy_train, loss_train=loss_train, jenis_sayap=jenis_sayap, jumlah_sayap=jumlah_sayap, badan_pesawat=badan_pesawat,jenis_mesin=jenis_mesin, jumlah_mesin=jumlah_mesin, bentuk_ekor=bentuk_ekor, persenjataan=persenjataan, warna=warna)
     
-
 # mengambil data dari form input dan menggabungkan menjadi 1 list dan data input difusikan
 @app.route('/getting_value', methods=['GET', 'POST'])
 def get_val():

@@ -11,16 +11,25 @@
   <title>Sistem Temu Kembali Informasi Pesawat udara Militer</title>
 </head>
 
+<!-- ======= Top Bar ======= -->
+<section id="topbar" class="d-flex align-items-center">
+  <div class="container d-flex justify-content-center justify-content-md-between">
+    <div class="contact-info d-flex align-items-center">
+      <i class="bi bi-phone-fill phone-icon"></i> Ardyansyah Vira Bahrudin
+    </div>
+</section>
+
 <!-- ======= Header ======= -->
 <header id="header" class="d-flex align-items-center">
   <div class="container d-flex align-items-center justify-content-between">
 
-    <h1 class="text-white" style="font-size: 24px"> SISTEM TEMU KEMBALI INFORMASI PESAWAT UDARA MILITER</a></h1>
+    <h1 class="text-white" style="font-size: 20px"> SISTEM TEMU KEMBALI INFORMASI PESAWAT UDARA MILITER</a></h1>
 
     <nav id="navbar" class="navbar">
       <ul>
         <li><a class="nav-link scrollto" href="/">Home</a></li>
-        <li><a class="nav-link scrollto active" href="/identification">Search</a></li>
+        <li><a class="nav-link scrollto" href="/panduan">Panduan</a></li>
+        <li><a class="nav-link scrollto active" href="/identification">Pencarian</a></li>
         <li><a class="nav-link scrollto" href="/dataset">Dataset</a></li>
         <li><a class="nav-link scrollto" href="/pelatihan">Training Data</a></li>
       <i class="bi bi-list mobile-nav-toggle"></i>
@@ -30,14 +39,33 @@
 </header><!-- End Header -->
 
 <body>
- 
+  <div id="hero2" class="row">
+    {% if setup_form_error %}
+    <h5 class="text-center alert alert-danger">Cek Kembali Form Setup Backpropagation</h5>
+    {% else %}
+    <!-- {% if show_dialog %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert"> 
+      <h5 class="text-center mt-3">Pelatihan Selesai!</h5>
+      <h5 class="text-center">Akurasi Data = {{ accuracy_train }} %</h5>
+      <h5 class="text-center">Hasil Error Data = {{ loss_train }}</h5>
+    </div>
+    {% endif %} -->
+    {% endif %}
+    {% if Form_error %}
+    <h5 class="text-center alert alert-danger">Cek Kembali Semua Form Anda!</h5>
+    {% endif %}
+    <!-- {% if error_train %}
+    <h5 class="text-center alert alert-danger">Data Perlu Dilatih Terlebih Dahulu!</h5>
+    {% endif %} -->
+  </div>
+  
   <div id="hero2" class="">
     <div class="container">
       <div class="row">
         <div class="col-md mt-2">
-          <h4 class="text-white text-center text left-content-center d-flex align-items-center">
-            Silahkan Pilih Karakteristik Sesuai keinginan
-          </h4>
+          <!-- <h4 class="text-white text-center text left-content-center d-flex align-items-center">
+            Silahkan Pilih Karakteristik
+          </h4> -->
         </div>
       </div>
       <form action="/getting_value" method="POST">
@@ -164,7 +192,7 @@
             {% endfor %}
           </select>
         </div>
-        <div class="row mt-2">
+        <div id="hero2" class="row mt-2">
           <div class="col-md-4">
             <label class="form-label text-white">Warna Pesawat</label>
             <input type="hidden" name="warnapesawat_data" id="warnapesawat_data" value="" />
@@ -182,7 +210,7 @@
         </div>
         <div class="row mt-2">
           <div class="col-md-6 "></div>
-          <div class="col-md-6 ">
+          <div class="col-md-3 ">
             <button type="submit" class="btn btn-danger mt-5 max-width">Cari Pesawat Udara</button>
           </div>
           <div class="col-md-3 "></div>
